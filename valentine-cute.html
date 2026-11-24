@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine?</title>
+    
+    <!-- CSS (Styles how things look) -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fdf2f8; /* Soft pink romantic background */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            overflow: hidden; /* Prevents the page from scrolling when the Yes button gets huge */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #d81b60; /* Deep pink text */
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows buttons to adjust on smaller screens */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease; /* Makes the button grow smoothly */
+        }
+
+        #yesBtn {
+            background-color: #4caf50; /* Green */
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        /* We will use this class in JS to hide the buttons at the end */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML (The content on the page) -->
+    <div class="container">
+        <!-- Make sure src matches your first GIF name exactly -->
+        <img id="mainImage" src="bubu-flower.gif" alt="Valentine Bear">
+        
+        <h1 id="questionText">Will you be my Valentine?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <!-- JavaScript (The interactive logic) -->
+    <script>
+        // Grab the elements from the HTML
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const image = document.getElementById('mainImage');
+        const questionText = document.getElementById('questionText');
+        const buttonsContainer = document.querySelector('.buttons');
+
+        // CHANGE THESE NAMES TO MATCH YOUR EXACT GIF FILENAMES!
+        const gifPaths = [
+            "bubu-flower.gif",   // [0] Initial image (not used in the click logic, but good to track)
+            "miss-you1.gif",    // [1] First 'No' click
+            "bubu-get-angry.gif",    // [2] Second 'No' click
+            "bubu-angry.gif",    // [3] Third 'No' click
+            "bubu-sword.gif",    // [4] Fourth 'No' click
+            "bubu-happyend.gif"    // [5] The 'Yes' image
+        ];
+
+        // The text that changes when she clicks "No"
+        const noMessages = [
+            "No",
+            "Are you sure?",
+            "Really sure?",
+            "Pookie please...",
+            "Think about it!",
+            "If you say no, I will be really sad...",
+            "I will be very very sad...",
+            "Ok fine, I will stop asking...",
+            "Just kidding, PLEASE SAY YES!"
+        ];
+
+        let noClickCount = 0;
+        let yesButtonSize = 1.2; // starting font size
+
+        // What happens when she clicks "No"
+        noBtn.addEventListener('click', function() {
+            noClickCount++;
+
+            // 1. Change the image
+            // Math.min ensures it doesn't try to look for more sad gifs than you have
+            let imageIndex = Math.min(noClickCount, 4); 
+            image.src = gifPaths[imageIndex];
+
+            // 2. Change the "No" button text
+            let messageIndex = Math.min(noClickCount, noMessages.length - 1);
+            noBtn.innerText = noMessages[messageIndex];
+
+            // 3. Make the "Yes" button bigger
+            yesButtonSize += 0.6; // Increases the size multiplier
+            yesBtn.style.fontSize = yesButtonSize + 'em';
+            yesBtn.style.padding = (yesButtonSize * 10) + 'px ' + (yesButtonSize * 20) + 'px';
+        });
+
+        // What happens when she finally clicks "Yes"
+        yesBtn.addEventListener('click', function() {
+            // Change image to the happy one (index 5 in your list)
+            image.src = gifPaths[5];
+
+            // Change the text
+            questionText.innerText = "YAY! I knew you would say yes! ❤️";
+
+            // Hide the buttons entirely
+            buttonsContainer.classList.add('hidden');
+        });
+    </script>
+
+</body>
+</html>
